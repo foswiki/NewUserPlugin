@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" date="1164920448" format="1.1" reprev="1.2" version="$Rev: 17515 $"}%
+%META:TOPICINFO{author="ProjectContributor" date="1164920448" format="1.1" reprev="1.2" version="$Rev$"}%
 ---+!! NewUserPlugin
 %TOC%
 ---++ Description

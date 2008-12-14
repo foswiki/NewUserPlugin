@@ -22,10 +22,10 @@ use vars qw( $VERSION $RELEASE $SHORTDESCRIPTION $NO_PREFS_IN_TOPIC $done);
 
 use constant DEBUG => 0; # toggle me
 
-# This should always be $Rev: 17515 $ so that TWiki can determine the checked-in
+# This should always be $Rev$ so that TWiki can determine the checked-in
 # status of the plugin. It is used by the build automation tools, so
 # you should leave it alone.
-$VERSION = '$Rev: 17515 $';
+$VERSION = '$Rev$';
 $RELEASE = 'v1.05';
 $SHORTDESCRIPTION = 'Create a user topic if it does not exist yet';
 $NO_PREFS_IN_TOPIC = 1;
