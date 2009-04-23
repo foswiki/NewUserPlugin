@@ -23,7 +23,7 @@ use vars qw( $VERSION $RELEASE $SHORTDESCRIPTION $NO_PREFS_IN_TOPIC $done);
 use constant DEBUG => 0; # toggle me
 
 $VERSION = '$Rev$';
-$RELEASE = 'v1.10';
+$RELEASE = 'v1.20';
 $SHORTDESCRIPTION = 'Create a user topic if it does not exist yet';
 $NO_PREFS_IN_TOPIC = 1;
 
@@ -59,13 +59,24 @@ sub beforeCommonTagsHandler {
 
   #writeDebug("called beforeCommonTagsHandler");
 
-  my $wikiUserName = TWiki::Func::getWikiUserName();
-  my $mainWeb = TWiki::Func::getMainWebname();
+  my $wikiName = TWiki::Func::getWikiName();
+  my $usersWeb = $TWiki::cfg{UsersWebname};
+  return if TWiki::Func::topicExists($usersWeb, $wikiName);
 
-  return if TWiki::Func::topicExists($mainWeb, $wikiUserName);
+  # SMELL: hack to prevent creation homepages for unknown user
+  # we can't ask the engine if the user exists when the user is authenticated
+  # externally as it assumes that any successfully authenticated user
+  # does in some way exist ... which it doesn't in our definition, i.e.
+  # if we don't get a proper WikiName; besides, the engine can't cope
+  # with topics starting with a lowercase letter anyway
+  my $wikiWordRegex = TWiki::Func::getRegularExpression('wikiWordRegex');
+  unless ($wikiName =~ /^($wikiWordRegex)$/) {
+    writeDebug("user's wikiname '$wikiName' is not a WikiWord ... not creating a homepage");
+    return;
+  }
 
-  writeDebug("NO home topic found for $wikiUserName");
-  createUserTopic($wikiUserName)
+  writeDebug("creating homepage for user $wikiName");
+  createUserTopic($wikiName)
 }
 
 ###############################################################################
@@ -94,8 +105,8 @@ sub expandVariables {
 sub createUserTopic {
   my $wikiUserName = shift;
 
-  my $twikiWeb = TWiki::Func::getTwikiWebname();
-  my $mainWeb = TWiki::Func::getMainWebname();
+  my $systemWeb = $TWiki::cfg{SystemWebName};
+  my $usersWeb = $TWiki::cfg{UsersWebName};
   my $newUserTemplate =
     TWiki::Func::getPreferencesValue('NEWUSERTEMPLATE') || 'NewUserTemplate';
   my $tmplTopic;
@@ -104,19 +115,19 @@ sub createUserTopic {
   # search the NEWUSERTEMPLATE
   $newUserTemplate =~ s/^\s+//go;
   $newUserTemplate =~ s/\s+$//go;
-  $newUserTemplate =~ s/\%TWIKIWEB\%/$twikiWeb/g;
-  $newUserTemplate =~ s/\%SYSTEMWEB\%/$twikiWeb/g;
-  $newUserTemplate =~ s/\%MAINWEB\%/$mainWeb/g;
+  $newUserTemplate =~ s/\%TWIKIWEB\%/$systemWeb/g;
+  $newUserTemplate =~ s/\%SYSTEMWEB\%/$systemWeb/g;
+  $newUserTemplate =~ s/\%MAINWEB\%/$usersWeb/g;
 
   # in Main
   ($tmplWeb, $tmplTopic) =
-    TWiki::Func::normalizeWebTopicName($mainWeb, $newUserTemplate);
+    TWiki::Func::normalizeWebTopicName($usersWeb, $newUserTemplate);
 
   unless (TWiki::Func::topicExists($tmplWeb, $tmplTopic)) {
 
     # in TWiki
     ($tmplWeb, $tmplTopic) =
-      TWiki::Func::normalizeWebTopicName($twikiWeb, $newUserTemplate);
+      TWiki::Func::normalizeWebTopicName($systemWeb, $newUserTemplate);
 
     unless (TWiki::Func::topicExists($tmplWeb, $tmplTopic)) {
       writeWarning("no new user template found"); # not found
@@ -141,8 +152,8 @@ sub createUserTopic {
   $text =~ s/\%USERNAME\%/$loginName/go;
   $text =~ s/\%WIKIUSERNAME\%/$wikiUserName/go;
 
-  writeDebug("saving new home topic $mainWeb.$wikiName");
-  my $errorMsg = TWiki::Func::saveTopicText($mainWeb, $wikiName, $text);
+  writeDebug("saving new home topic $usersWeb.$wikiName");
+  my $errorMsg = TWiki::Func::saveTopicText($usersWeb, $wikiName, $text);
   if ($errorMsg) {
     writeWarning("error during save of $tmplWeb.$tmplTopic: $errorMsg");
     return;
@@ -150,14 +161,14 @@ sub createUserTopic {
 
   # expanding VARs in a second phase, after the topic file was created (to get correct $meta objects)
   my $found = 0;
-  $found = 1 if $text =~ s/\%EXPAND\{(.*?)\}\%/&expandVariables($1, $wikiName, $mainWeb)/ge;
-  $found = 1 if $text =~ s/\%STARTEXPAND\%(.*?)\%STOPEXPAND\%/TWiki::Func::expandCommonVariables($1, $wikiName, $mainWeb)/ges;
+  $found = 1 if $text =~ s/\%EXPAND\{(.*?)\}\%/&expandVariables($1, $wikiName, $usersWeb)/ge;
+  $found = 1 if $text =~ s/\%STARTEXPAND\%(.*?)\%STOPEXPAND\%/TWiki::Func::expandCommonVariables($1, $wikiName, $usersWeb)/ges;
 
   if ($found) {
-    writeDebug("expanding vars in new home topic $mainWeb.$wikiName");
-    $errorMsg = TWiki::Func::saveTopicText($mainWeb, $wikiName, $text);
+    writeDebug("expanding vars in new home topic $usersWeb.$wikiName");
+    $errorMsg = TWiki::Func::saveTopicText($usersWeb, $wikiName, $text);
     if ($errorMsg) {
-      writeWarning("error during save of var expanded version of $mainWeb.$wikiName: $errorMsg");
+      writeWarning("error during save of var expanded version of $usersWeb.$wikiName: $errorMsg");
     }
   }
 }

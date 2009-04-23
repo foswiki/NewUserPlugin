@@ -27,10 +27,9 @@ NewLdapUserTemplate, to illustrate how to extract user data from an LDAP directo
 the information into the user's topic dynamically. You will need to install the
 Foswiki:Extensions/LdapNgPlugin and the Foswiki:Extensions/GluePlugin to make use of it.
 
-During topic creation the following variables in the <nop>NEWUSERTEMPLATE are expanded:
 
 ---++ Syntax
-On creation of the user home topic following variables in the <nop>NEWUSERTEMPLATE are expande:
+During topic creation the following variables in the <nop>NEWUSERTEMPLATE are expanded:
    * =$nop=: 
    * =%<nop>WIKINAME%=:
    * =%<nop<USERNAME%=
@@ -62,8 +61,9 @@ This work is partly funded by
 |  Plugin Author: | Michael Daum |
 |  Copyright &copy;: | 2006-2009, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
-|  Plugin Version: | v1.10 |
+|  Plugin Version: | v1.20 |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  18 Feb 2009 | homepages are only created if we can get a !WikiUserName that is a proper !WikiWord |
 |  15 Sep 2008 | Oliver Krueger: added EXPAND feature, removed noise in debug.txt |
 |  11 Jun 2008 | added =%<nop>STARTEXPAND%=, =%<nop>STOPEXPAND%= to expand TML during topic creation |
 |  12 Feb 2008 | remove leading/trailing whitespaces from NEWUSERTEMPLATE filename |
