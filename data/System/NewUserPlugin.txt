@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" date="1164920448" format="1.1" reprev="1.2" version="$Rev$"}%
+%META:TOPICINFO{author="ProjectContributor" date="1164920448" format="1.1"  version="$Rev$"}%
 ---+!! NewUserPlugin
 %TOC%
 ---++ Description
@@ -47,7 +47,6 @@ Example:
 </verbatim>
 
 ---++ Installation Instructions
-
 %$INSTALL_INSTRUCTIONS%
 
 ---++ Plugin Info
@@ -61,8 +60,9 @@ This work is partly funded by
 |  Plugin Author: | Michael Daum |
 |  Copyright &copy;: | 2006-2009, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
-|  Plugin Version: | v1.20 |
+|  Plugin Version: | v2.00 |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  24 Apr 2009 | converted to foswiki plugin |
 |  18 Feb 2009 | homepages are only created if we can get a !WikiUserName that is a proper !WikiWord |
 |  15 Sep 2008 | Oliver Krueger: added EXPAND feature, removed noise in debug.txt |
 |  11 Jun 2008 | added =%<nop>STARTEXPAND%=, =%<nop>STOPEXPAND%= to expand TML during topic creation |
@@ -74,7 +74,7 @@ This work is partly funded by
 |  18 Dec 2006 | initial release |
 |  Dependencies: | None |
 |  Plugin Home: | Foswiki:Extensions/%TOPIC% |
-|  Feedback: | Foswiki:Extensions/%TOPIC%Dev |
+|  Support: | Foswiki:Support/%TOPIC% |
 
 
 %META:FILEATTACHMENT{name="wikiringlogo40x40.png" attachment="wikiringlogo40x40.png" attr="h" comment="" date="1189787359" path="wikiringlogo40x40.png" size="2571" stream="wikiringlogo40x40.png" tmpFilename="" user="ProjectContributor" version="1"}%
