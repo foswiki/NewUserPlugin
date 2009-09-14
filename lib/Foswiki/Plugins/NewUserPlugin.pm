@@ -19,11 +19,13 @@ package Foswiki::Plugins::NewUserPlugin;
 
 use strict;
 use vars qw( $VERSION $RELEASE $SHORTDESCRIPTION $NO_PREFS_IN_TOPIC $done);
+use Foswiki::Func ();
+use Foswiki::Plugins ();
 
 use constant DEBUG => 0; # toggle me
 
-$VERSION = '$Rev: 3640 $';
-$RELEASE = 'v2.00';
+$VERSION = '$Rev: 3642 (2009-04-23) $';
+$RELEASE = 'v2.10';
 $SHORTDESCRIPTION = 'Create a user topic if it does not exist yet';
 $NO_PREFS_IN_TOPIC = 1;
 
@@ -146,14 +148,27 @@ sub createUserTopic {
   my $wikiName = Foswiki::Func::getWikiName();
   my $loginName = Foswiki::Func::wikiToUserName($wikiName);
   $text =~ s/\$nop//go; 
-  $text =~ s/\%WIKINAME\%/$wikiName/go;
+  $text =~ s/\%25USERNAME\%25/$loginName/go;
+  $text =~ s/\%25WIKINAME\%25/$wikiName/go;
+  $text =~ s/\%25WIKIUSERNAME\%25/$wikiUserName/go;
   $text =~ s/\%USERNAME\%/$loginName/go;
+  $text =~ s/\%WIKINAME\%/$wikiName/go;
   $text =~ s/\%WIKIUSERNAME\%/$wikiUserName/go;
+
+  writeDebug("patching in RegistrationAgent");
+  my $session = $Foswiki::Plugins::SESSION;
+  my $origCUID = $session->{user};
+  my $registrationAgentCUID = 
+    Foswiki::Func::getCanonicalUserID($Foswiki::cfg{Register}{RegistrationAgentWikiName});
+  #writeDebug("registrationAgentCUID=$registrationAgentCUID");
+
+  $session->{user} = $registrationAgentCUID;
 
   writeDebug("saving new home topic $usersWeb.$wikiName");
   my $errorMsg = Foswiki::Func::saveTopicText($usersWeb, $wikiName, $text);
   if ($errorMsg) {
     writeWarning("error during save of $tmplWeb.$tmplTopic: $errorMsg");
+    $session->{user} = $origCUID;
     return;
   } 
 
@@ -169,6 +184,7 @@ sub createUserTopic {
       writeWarning("error during save of var expanded version of $usersWeb.$wikiName: $errorMsg");
     }
   }
+  $session->{user} = $origCUID;
 }
 
 1;

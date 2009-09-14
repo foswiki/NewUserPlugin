@@ -60,8 +60,11 @@ This work is partly funded by
 |  Plugin Author: | Michael Daum |
 |  Copyright &copy;: | 2006-2009, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
-|  Plugin Version: | v2.00 |
+|  Release: | %$RELEASE% |
+|  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  13 Sep 2009 | creating user homepages as !RegistrationAgent |
+|  05 May 2009 | also expand %25WIKINAME%25 and friends |
 |  24 Apr 2009 | converted to foswiki plugin |
 |  18 Feb 2009 | homepages are only created if we can get a !WikiUserName that is a proper !WikiWord |
 |  15 Sep 2008 | Oliver Krueger: added EXPAND feature, removed noise in debug.txt |
