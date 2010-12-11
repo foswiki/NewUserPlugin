@@ -25,7 +25,7 @@ use Foswiki::Plugins ();
 use constant DEBUG => 0; # toggle me
 
 $VERSION = '$Rev: 3642 (2009-04-23) $';
-$RELEASE = 'v2.10';
+$RELEASE = '2.20';
 $SHORTDESCRIPTION = 'Create a user topic if it does not exist yet';
 $NO_PREFS_IN_TOPIC = 1;
 

@@ -13,7 +13,7 @@
 This plugin is of use in those cases where users are registered and authenticated externally,
 for example using LDAP.
 So users are not registered natively using its own registration workflow and therefore don't
-have a user topic in the %MAINWEB% web.
+have a user topic in the %USERSWEB% web.
 This plugin fills that gap and creates a user's topic if it does not yet exist.
 
 ---++ Settings
@@ -63,6 +63,7 @@ This work is partly funded by
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  11 Dec 2010 | fixed dependencies of plugin and simplified example !RenderLdapUser |
 |  13 Sep 2009 | creating user homepages as !RegistrationAgent |
 |  05 May 2009 | also expand %25WIKINAME%25 and friends |
 |  24 Apr 2009 | converted to foswiki plugin |

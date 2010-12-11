@@ -1,1 +1,1 @@
-Foswiki::Plugins::GluePlugin,,perl
+Foswiki::Plugins::LdapNgPlugin,>=3.0,Required
