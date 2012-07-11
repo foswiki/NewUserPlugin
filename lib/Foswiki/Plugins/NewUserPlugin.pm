@@ -26,7 +26,7 @@ use Error qw(:try);
 use constant DEBUG => 0; # toggle me
 
 $VERSION = '$Rev: 3642 (2009-04-23) $';
-$RELEASE = '2.30';
+$RELEASE = '2.31';
 $SHORTDESCRIPTION = 'Create a user topic if it does not exist yet';
 $NO_PREFS_IN_TOPIC = 1;
 
@@ -150,14 +150,17 @@ sub createUserTopic {
   my $wikiName = Foswiki::Func::getWikiName();
   my $loginName = Foswiki::Func::wikiToUserName($wikiName);
   $text =~ s/\$nop//go; 
-  $text =~ s/\%25USERNAME\%25/$loginName/go;
-  $text =~ s/\%25WIKINAME\%25/$wikiName/go;
-  $text =~ s/\%25WIKIUSERNAME\%25/$wikiUserName/go;
   $text =~ s/\%USERNAME\%/$loginName/go;
   $text =~ s/\%WIKINAME\%/$wikiName/go;
   $text =~ s/\%WIKIUSERNAME\%/$wikiUserName/go;
   $text =~ s/\%EXPAND\{(.*?)\}\%/expandVariables($1, $wikiName, $usersWeb)/ge;
   $text =~ s/\%STARTEXPAND\%(.*?)\%STOPEXPAND\%/Foswiki::Func::expandCommonVariables($1, $wikiName, $usersWeb)/ges;
+
+  foreach my $field ($meta->find('FIELD'), $meta->find('PREFERENCE')) {
+    $field->{value} =~ s/\%USERNAME\%/$loginName/go;
+    $field->{value} =~ s/\%WIKINAME\%/$wikiName/go;
+    $field->{value} =~ s/\%WIKIUSERNAME\%/$wikiUserName/go;
+  }
 
   writeDebug("patching in RegistrationAgent");
 
