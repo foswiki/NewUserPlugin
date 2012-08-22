@@ -26,7 +26,7 @@ use Error qw(:try);
 use constant DEBUG => 0; # toggle me
 
 $VERSION = '$Rev: 3642 (2009-04-23) $';
-$RELEASE = '2.31';
+$RELEASE = '2.32';
 $SHORTDESCRIPTION = 'Create a user topic if it does not exist yet';
 $NO_PREFS_IN_TOPIC = 1;
 

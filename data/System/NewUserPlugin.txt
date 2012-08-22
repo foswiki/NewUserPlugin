@@ -63,6 +63,7 @@ This work is partly funded by
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  22 Aug 2012 | fixed VIEW_TEMPLATE setting in new user profile pages |
 |  11 Jul 2012 | fixed expansion of variables in meta data |
 |  20 Jan 2012 | fixed creating user profiles by not using deprecate Func apis; \
                  added better view template for ldap users; \
