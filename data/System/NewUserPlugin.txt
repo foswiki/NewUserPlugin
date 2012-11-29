@@ -2,14 +2,6 @@
 ---+!! NewUserPlugin
 %TOC%
 ---++ Description
-<table style="float:right">
-<tr>
-  <td><img src="%ATTACHURLPATH%/wikiringlogo40x40.png"></td>
-  <td><a href="http://wikiring.com" title="Make your Wiki ring!" style="text-decoration:none">
-      Powered by <br /> <nop>WikiRing Consultants </a>
-  </td>
-</tr>
-</table>
 This plugin is of use in those cases where users are registered and authenticated externally,
 for example using LDAP.
 So users are not registered natively using its own registration workflow and therefore don't
@@ -63,6 +55,7 @@ This work is partly funded by
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  29 Nov 2012 | added service to bulk attach photos to user topics |
 |  22 Aug 2012 | fixed VIEW_TEMPLATE setting in new user profile pages |
 |  11 Jul 2012 | fixed expansion of variables in meta data |
 |  20 Jan 2012 | fixed creating user profiles by not using deprecate Func apis; \
@@ -84,6 +77,3 @@ This work is partly funded by
 |  Dependencies: | None |
 |  Plugin Home: | Foswiki:Extensions/%TOPIC% |
 |  Support: | Foswiki:Support/%TOPIC% |
-
-
-%META:FILEATTACHMENT{name="wikiringlogo40x40.png" attachment="wikiringlogo40x40.png" attr="h" comment="" date="1189787359" path="wikiringlogo40x40.png" size="2571" stream="wikiringlogo40x40.png" tmpFilename="" user="ProjectContributor" version="1"}%

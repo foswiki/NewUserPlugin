@@ -18,17 +18,29 @@
 package Foswiki::Plugins::NewUserPlugin;
 
 use strict;
-use vars qw( $VERSION $RELEASE $SHORTDESCRIPTION $NO_PREFS_IN_TOPIC $done);
+use warnings;
+
 use Foswiki::Func ();
 use Foswiki::Plugins ();
 use Error qw(:try);
 
-use constant DEBUG => 0; # toggle me
+our $VERSION = '2.40';
+our $RELEASE = '2.40';
+our $SHORTDESCRIPTION = 'Create a user topic if it does not exist yet';
+our $NO_PREFS_IN_TOPIC = 1;
+our $done;
 
-$VERSION = '$Rev: 3642 (2009-04-23) $';
-$RELEASE = '2.32';
-$SHORTDESCRIPTION = 'Create a user topic if it does not exist yet';
-$NO_PREFS_IN_TOPIC = 1;
+use constant DEBUG => 1; # toggle me
+
+###############################################################################
+sub initPlugin {
+#  my ($topic, $web, $user) = @_;
+
+  Foswiki::Func::registerRESTHandler('createUserTopics', \&restCreateUserTopics);
+
+  $done = 0;
+  return 1;
+}
 
 ###############################################################################
 sub writeDebug {
@@ -44,11 +56,37 @@ sub writeWarning {
 }
 
 ###############################################################################
-sub initPlugin {
-#  my ($topic, $web, $user) = @_;
+sub restCreateUserTopics {
+  my $session = shift;
 
-  $done = 0;
-  return 1;
+  my $mapping = $session->{users}{mapping};
+  my $passwordManager = $mapping->{passwords};
+
+  if ($passwordManager->canFetchUsers) {
+    my $usersWeb = $Foswiki::cfg{UsersWebName};
+    my $wikiWordRegex = $Foswiki::regex{'wikiWordRegex'};
+    my $it = $passwordManager->fetchUsers();
+    my $count = 0;
+    while ($it->hasNext()) {
+      my $loginName = $it->next();
+      my $wikiName = Foswiki::Func::userToWikiName($loginName, 1);
+      #writeDebug("checking loginName=$loginName, wikiName=$wikiName");
+      next if Foswiki::Func::topicExists($usersWeb, $wikiName);
+      unless ($wikiName =~ /^($wikiWordRegex)$/) {
+	writeDebug("user's wikiname '$wikiName' is not a WikiWord ... not creating a user topic");
+	next;
+      }
+      writeDebug("creating a user topic for $wikiName");
+      createUserTopic($wikiName);
+      $count++;
+    }
+
+    writeDebug("created $count user topics");
+  } else {
+    writeWarning("can't fetch users");
+  }
+
+  return;
 }
 
 ###############################################################################
@@ -93,7 +131,7 @@ sub expandVariables {
   my $found = 0;
   my $mixedAlphaNum = $Foswiki::regex{'mixedAlphaNum'};
 
-  $found = 1 if $text =~ s/\$percnt/\%/go;
+  $found = 1 if $text =~ s/\$perce?nt/\%/go;
   $found = 1 if $text =~ s/\$nop//go;
   $found = 1 if $text =~ s/\$n([^$mixedAlphaNum]|$)/\n$1/go;
   $found = 1 if $text =~ s/\$dollar/\$/go;
@@ -104,9 +142,9 @@ sub expandVariables {
 }
 
 ###############################################################################
-# creates a user topic for the given wikiUserName
+# creates a user topic for the given wikiName
 sub createUserTopic {
-  my $wikiUserName = shift;
+  my $wikiName = shift;
 
   my $systemWeb = $Foswiki::cfg{SystemWebName};
   my $usersWeb = $Foswiki::cfg{UsersWebName};
@@ -115,6 +153,7 @@ sub createUserTopic {
     Foswiki::Func::getPreferencesValue('NEWUSERTEMPLATE') || 'NewUserTemplate';
   my $tmplTopic;
   my $tmplWeb;
+  my $wikiUserName = $usersWeb.'.'.$wikiName;
 
   # search the NEWUSERTEMPLATE
   $newUserTemplate =~ s/^\s+//go;
@@ -122,7 +161,7 @@ sub createUserTopic {
   $newUserTemplate =~ s/\%SYSTEMWEB\%/$systemWeb/g;
   $newUserTemplate =~ s/\%MAINWEB\%/$usersWeb/g;
 
-  # in Main
+  # in users web
   ($tmplWeb, $tmplTopic) =
     Foswiki::Func::normalizeWebTopicName($usersWeb, $newUserTemplate);
 
@@ -137,17 +176,16 @@ sub createUserTopic {
     }
   }
 
-  writeDebug("newusertemplate = $tmplWeb.$tmplTopic");
+  #writeDebug("newusertemplate = $tmplWeb.$tmplTopic");
 
   # read the template
   my ($meta, $text) = Foswiki::Func::readTopic($tmplWeb, $tmplTopic);
-  unless ($text) {
+  unless ($meta) {
     writeWarning("can't read $tmplWeb.$tmplTopic");
     return;
   }
 
   # insert data
-  my $wikiName = Foswiki::Func::getWikiName();
   my $loginName = Foswiki::Func::wikiToUserName($wikiName);
   $text =~ s/\$nop//go; 
   $text =~ s/\%USERNAME\%/$loginName/go;
@@ -160,9 +198,11 @@ sub createUserTopic {
     $field->{value} =~ s/\%USERNAME\%/$loginName/go;
     $field->{value} =~ s/\%WIKINAME\%/$wikiName/go;
     $field->{value} =~ s/\%WIKIUSERNAME\%/$wikiUserName/go;
+    $field->{value} =~ s/\%EXPAND\{(.*?)\}\%/expandVariables($1, $wikiName, $usersWeb)/ge;
+    $field->{value} =~ s/\%STARTEXPAND\%(.*?)\%STOPEXPAND\%/Foswiki::Func::expandCommonVariables($1, $wikiName, $usersWeb)/ges;
   }
 
-  writeDebug("patching in RegistrationAgent");
+  #writeDebug("patching in RegistrationAgent");
 
   my $session = $Foswiki::Plugins::SESSION;
   my $origCUID = $session->{user};
@@ -171,7 +211,7 @@ sub createUserTopic {
   #writeDebug("registrationAgentCUID=$registrationAgentCUID");
 
   $session->{user} = $registrationAgentCUID;
-  writeDebug("saving new home topic $usersWeb.$wikiName");
+  #writeDebug("saving new user topic $usersWeb.$wikiName");
   
   try {
     Foswiki::Func::saveTopic($usersWeb, $wikiName, $meta, $text);
