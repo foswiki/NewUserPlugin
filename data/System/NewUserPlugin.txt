@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" date="1164920448" format="1.1"  version="$Rev$"}%
+%META:TOPICINFO{author="ProjectContributor" date="1356278777" format="1.1" version="1"}%
 ---+!! NewUserPlugin
 %TOC%
 ---++ Description
@@ -10,10 +10,12 @@ This plugin fills that gap and creates a user's topic if it does not yet exist.
 
 ---++ Settings
 You can customize the template that is used to create a new user topic
-by setting the =NEWUSERTEMPLATE= preference variable (e.g. in %USERSWEB%.SitePreferences):
+by setting the ={NewUserTemplate}= in =configure=, or by setting 
+a =NEWUSERTEMPLATE= preference variable (e.g. in %USERSWEB%.SitePreferences):
 
    * Set NEWUSERTEMPLATE = %SYSTEMWEB%.NewLdapUserTemplate
 
+The latter will only take effect when not specified in =configure=.
 If not set, it defaults to <nop>NewUserTemplate. This plugin comes with an example template,
 NewLdapUserTemplate, to illustrate how to extract user data from an LDAP directory and integrate
 the information into the user's topic dynamically. You will need to install the
@@ -50,11 +52,12 @@ This work is partly funded by
     * Set SHORTDESCRIPTION = Create a user topic if it does not exist yet
 -->
 |  Plugin Author: | Michael Daum |
-|  Copyright &copy;: | 2006-2012, Michael Daum http://michaeldaumconsulting.com |
+|  Copyright &copy;: | 2006-2013, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  27 Feb 2013 | disabled debug flag by default |
 |  29 Nov 2012 | added service to bulk attach photos to user topics |
 |  22 Aug 2012 | fixed VIEW_TEMPLATE setting in new user profile pages |
 |  11 Jul 2012 | fixed expansion of variables in meta data |
