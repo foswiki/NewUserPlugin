@@ -36,7 +36,9 @@ use constant DEBUG => 0; # toggle me
 sub initPlugin {
 #  my ($topic, $web, $user) = @_;
 
-  Foswiki::Func::registerRESTHandler('createUserTopics', \&restCreateUserTopics);
+  Foswiki::Func::registerRESTHandler('createUserTopics', \&restCreateUserTopics, 
+    authenticate => 0
+  );
 
   $done = 0;
   return 1;
@@ -101,7 +103,7 @@ sub beforeCommonTagsHandler {
   #writeDebug("called beforeCommonTagsHandler");
 
   my $wikiName = Foswiki::Func::getWikiName();
-  my $usersWeb = $Foswiki::cfg{UsersWebname};
+  my $usersWeb = $Foswiki::cfg{UsersWebName};
   return if Foswiki::Func::topicExists($usersWeb, $wikiName);
 
   # SMELL: hack to prevent creation homepages for unknown user
