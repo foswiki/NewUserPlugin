@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2013 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2014 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,20 +24,22 @@ use Foswiki::Func ();
 use Foswiki::Plugins ();
 use Error qw(:try);
 
-our $VERSION = '2.41';
-our $RELEASE = '2.41';
+our $VERSION = '2.42';
+our $RELEASE = '2.42';
 our $SHORTDESCRIPTION = 'Create a user topic if it does not exist yet';
 our $NO_PREFS_IN_TOPIC = 1;
 our $done;
 
-use constant DEBUG => 0; # toggle me
+use constant TRACE => 0; # toggle me
 
 ###############################################################################
 sub initPlugin {
 #  my ($topic, $web, $user) = @_;
 
   Foswiki::Func::registerRESTHandler('createUserTopics', \&restCreateUserTopics, 
-    authenticate => 0
+    authenticate => 1,
+    validate => 0,
+    http_allow => 'GET,POST',
   );
 
   $done = 0;
@@ -46,7 +48,7 @@ sub initPlugin {
 
 ###############################################################################
 sub writeDebug {
-  return unless DEBUG;
+  return unless TRACE;
   print STDERR 'NewUserPlugin - '.$_[0]."\n";
   #Foswiki::Func::writeDebug("NewUserPlugin - $_[0]");
 }

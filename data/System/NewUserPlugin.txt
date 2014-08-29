@@ -52,11 +52,12 @@ This work is partly funded by
     * Set SHORTDESCRIPTION = Create a user topic if it does not exist yet
 -->
 |  Plugin Author: | Michael Daum |
-|  Copyright &copy;: | 2006-2013, Michael Daum http://michaeldaumconsulting.com |
+|  Copyright &copy;: | 2006-2014, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  04 Apr 2014 | flag rest handlers that don't require authentication |
 |  27 Feb 2013 | disabled debug flag by default |
 |  29 Nov 2012 | added service to bulk attach photos to user topics |
 |  22 Aug 2012 | fixed VIEW_TEMPLATE setting in new user profile pages |
