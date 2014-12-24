@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" date="1356278777" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" date="1419453466" format="1.1" version="1"}%
 ---+!! NewUserPlugin
 %TOC%
 ---++ Description
@@ -26,7 +26,7 @@ Foswiki:Extensions/LdapNgPlugin and the Foswiki:Extensions/GluePlugin to make us
 During topic creation the following variables in the <nop>NEWUSERTEMPLATE are expanded:
    * =$nop=: 
    * =%<nop>WIKINAME%=:
-   * =%<nop<USERNAME%=
+   * =%<nop>USERNAME%=
    * =%<nop>WIKIUSERNAME%=
    * =%<nop>EXPAND{...}%=
    * =%<nop>STARTEXPAND%= ... =%<nop>STOPEXPAND%=
