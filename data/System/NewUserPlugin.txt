@@ -24,8 +24,8 @@ Foswiki:Extensions/LdapNgPlugin and the Foswiki:Extensions/GluePlugin to make us
 
 ---++ Syntax
 During topic creation the following variables in the <nop>NEWUSERTEMPLATE are expanded:
-   * =$nop=: 
-   * =%<nop>WIKINAME%=:
+   * =$nop= 
+   * =%<nop>WIKINAME%=
    * =%<nop>USERNAME%=
    * =%<nop>WIKIUSERNAME%=
    * =%<nop>EXPAND{...}%=
