@@ -1,8 +1,8 @@
 *.swp
-NewUserPlugin.md5
-NewUserPlugin.sha1
-NewUserPlugin.tgz
-NewUserPlugin.txt
-NewUserPlugin.zip
-NewUserPlugin_installer
-NewUserPlugin_installer.pl
+/NewUserPlugin.md5
+/NewUserPlugin.sha1
+/NewUserPlugin.tgz
+/NewUserPlugin.txt
+/NewUserPlugin.zip
+/NewUserPlugin_installer
+/NewUserPlugin_installer.pl

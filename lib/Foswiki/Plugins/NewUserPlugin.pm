@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2014 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2016 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,8 +24,8 @@ use Foswiki::Func ();
 use Foswiki::Plugins ();
 use Error qw(:try);
 
-our $VERSION = '2.42';
-our $RELEASE = '2.42';
+our $VERSION = '2.43';
+our $RELEASE = '09 Sep 2016';
 our $SHORTDESCRIPTION = 'Create a user topic if it does not exist yet';
 our $NO_PREFS_IN_TOPIC = 1;
 our $done;
@@ -135,10 +135,11 @@ sub expandVariables {
   my $found = 0;
   my $mixedAlphaNum = $Foswiki::regex{'mixedAlphaNum'};
 
-  $found = 1 if $text =~ s/\$perce?nt/\%/go;
-  $found = 1 if $text =~ s/\$nop//go;
-  $found = 1 if $text =~ s/\$n([^$mixedAlphaNum]|$)/\n$1/go;
-  $found = 1 if $text =~ s/\$dollar/\$/go;
+  $found = 1 if $text =~ s/\$perce?nt/\%/g;
+  $found = 1 if $text =~ s/\$nop//g;
+  $found = 1 if $text =~ s/\$n([^$mixedAlphaNum]|$)/\n$1/g;
+  $found = 1 if $text =~ s/\$dollar/\$/g;
+  $found = 1 if $text =~ s/\\"/"/g;
 
   $text = Foswiki::Func::expandCommonVariables($text, $topic, $web) if $found;
 

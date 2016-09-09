@@ -1,6 +1,9 @@
 %META:TOPICINFO{author="ProjectContributor" date="1419453466" format="1.1" version="1"}%
 ---+!! NewUserPlugin
+%FORMFIELD{"Description"}%
+
 %TOC%
+
 ---++ Description
 This plugin is of use in those cases where users are registered and authenticated externally,
 for example using LDAP.
@@ -43,20 +46,11 @@ Example:
 ---++ Installation Instructions
 %$INSTALL_INSTRUCTIONS%
 
----++ Plugin Info
-This work is partly funded by 
-   * [[http://www.hennerich.de][T+T Hennerich <nop>GmbH]]
-   * [[http://www.trivadis.com][Trivadis AG]]
+---++ Dependencies
+%$DEPENDENCIES%
 
-<!--
-    * Set SHORTDESCRIPTION = Create a user topic if it does not exist yet
--->
-|  Plugin Author: | Michael Daum |
-|  Copyright &copy;: | 2006-2014, Michael Daum http://michaeldaumconsulting.com |
-|  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
-|  Release: | %$RELEASE% |
-|  Version: | %$VERSION% |
-|  Change History: | <!-- versions below in reverse order -->&nbsp; |
+---++ Change History
+|  09 Sep 2016 | remove /o flag from regular expressions |
 |  04 Apr 2014 | flag rest handlers that don't require authentication |
 |  27 Feb 2013 | disabled debug flag by default |
 |  29 Nov 2012 | added service to bulk attach photos to user topics |
@@ -78,6 +72,14 @@ This work is partly funded by
 |  23 Oct 2007 | work around infinite loop in combination with <nop>ActionTrackerPlugin |
 |  17 Sep 2007 | replace usernames in formtemplates as well as in the topic text |
 |  18 Dec 2006 | initial release |
-|  Dependencies: | None |
-|  Plugin Home: | Foswiki:Extensions/%TOPIC% |
-|  Support: | Foswiki:Support/%TOPIC% |
+
+%META:FORM{name="PackageForm"}%
+%META:FIELD{name="Author" title="Author" value="Michael Daum"}%
+%META:FIELD{name="Copyright" title="Copyright" value="2006-2016, Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="Description" title="Description" value="%25$SHORTDESCRIPTION%25"}%
+%META:FIELD{name="Home" title="Home" value="Foswiki:Extensions/%TOPIC%"}%
+%META:FIELD{name="License" title="License" value="GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]])"}%
+%META:FIELD{name="Release" title="Release" value="%$RELEASE%"}%
+%META:FIELD{name="Repository" title="Repository" value="https://github.com/foswiki/%TOPIC%"}%
+%META:FIELD{name="Support" title="Support" value="Foswiki:Support/%TOPIC%"}%
+%META:FIELD{name="Version" title="Version" value="%$VERSION%"}%
